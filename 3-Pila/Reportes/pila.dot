@@ -1,0 +1,19 @@
+digraph G{
+	rankdir=TB;
+	node [shape = record, height = 0.1]
+node7 [label = "{<f0>7 | <f1>}"];
+node6 [label = "{<f0>6 | <f1>}"];
+node5 [label = "{<f0>5 | <f1>}"];
+node4 [label = "{<f0>4 | <f1>}"];
+node3 [label = "{<f0>3 | <f1>}"];
+node2 [label = "{<f0>2 | <f1>}"];
+node1 [label = "{<f0>1 | <f1>}"];
+node7:f1 -> node6:f0;
+node6:f1 -> node5:f0;
+node5:f1 -> node4:f0;
+node4:f1 -> node3:f0;
+node3:f1 -> node2:f0;
+node2:f1 -> node1:f0;
+nil_final [label = "nil", shape = square];
+node1:f1 -> nil_final;
+}
