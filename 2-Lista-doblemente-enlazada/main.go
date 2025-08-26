@@ -1,5 +1,11 @@
 package main
 
+import (
+	"fmt"
+	"os"
+	"os/exec"
+)
+
 type Nodo struct {
 	Dato      int
 	Siguiente *Nodo
@@ -82,7 +88,7 @@ func (l *Lista_doble_enlazada) Eliminar(dato int) {
 
 func (l *Lista_doble_enlazada) Imprimir() {
 	if l.Cabeza == nil {
-		println("[]")
+		fmt.Println("[]")
 		return
 	}
 	actual := l.Cabeza
@@ -92,6 +98,63 @@ func (l *Lista_doble_enlazada) Imprimir() {
 		actual = actual.Siguiente
 	}
 	print(actual.Dato, "]\n")
+}
+
+func (l *Lista_doble_enlazada) Graficar() {
+	os.Mkdir("Reportes", os.ModePerm)
+
+	dot := "digraph G{\n"
+	dot += "	rankdir=LR;\n"
+	dot += "	node [shape = record, height = 0.1]\n"
+
+	// nodo inicial nil
+	dot += "nil_inicio [label = \"nil\", shape = square];\n"
+
+	// nodos de la lista
+	actual := l.Cabeza
+	for i := 0; i < l.Tamanio; i++ {
+		dot += fmt.Sprintf("node%d [label = \"{<f0>%d | <f1>}\"];\n", i, actual.Dato)
+		actual = actual.Siguiente
+	}
+
+	// Nodo final nil
+	dot += "nil_final [label = \"nil\", shape = square];\n"
+
+	if l.Cabeza != nil {
+		dot += "node0 -> nil_inicio;\n"
+		dot += "nil_inicio -> node0 [style=invis];\n"
+	}
+
+	// Conexiones dobles entre nodos
+	actual = l.Cabeza
+	for i := 0; i < l.Tamanio-1; i++ {
+		dot += fmt.Sprintf("node%d -> node%d;\n", i, i+1)
+		dot += fmt.Sprintf("node%d -> node%d;\n", i+1, i)
+		actual = actual.Siguiente
+	}
+
+	// Conexión último nodo -> nil_final
+	if l.Tamanio > 0 {
+		dot += fmt.Sprintf("node%d -> nil_final;\n", l.Tamanio-1)
+		dot += fmt.Sprintf("nil_final -> node%d [style=invis];\n", l.Tamanio-1)
+	}
+	dot += "}"
+
+	f, err := os.Create("Reportes/lista_doble_enlazada.dot")
+	if err != nil {
+		fmt.Println("Error creando archivo:", err)
+		return
+	}
+	defer f.Close()
+	f.WriteString(dot)
+
+	cmd := exec.Command("dot", "-Tpng", "Reportes/lista_doble_enlazada.dot", "-o", "Reportes/lista_doble_enlazada.png")
+	err = cmd.Run()
+	if err != nil {
+		fmt.Println("Error ejecutando Graphviz:", err)
+		return
+	}
+	fmt.Println("Imagen generada exitosamente")
 }
 
 func main() {
@@ -104,6 +167,7 @@ func main() {
 	listaDoblementeEnlazada.Insertar(6)
 	listaDoblementeEnlazada.Insertar(7)
 	listaDoblementeEnlazada.Insertar(8)
+	listaDoblementeEnlazada.Graficar()
 
 	listaDoblementeEnlazada.Imprimir()
 
@@ -120,4 +184,6 @@ func main() {
 
 	listaDoblementeEnlazada.Eliminar(5)
 	listaDoblementeEnlazada.Imprimir()
+
+	// listaDoblementeEnlazada.Graficar()
 }

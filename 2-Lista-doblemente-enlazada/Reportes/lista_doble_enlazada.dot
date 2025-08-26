@@ -1,0 +1,32 @@
+digraph G{
+	rankdir=LR;
+	node [shape = record, height = 0.1]
+nil_inicio [label = "nil", shape = square];
+node0 [label = "{<f0>1 | <f1>}"];
+node1 [label = "{<f0>2 | <f1>}"];
+node2 [label = "{<f0>3 | <f1>}"];
+node3 [label = "{<f0>4 | <f1>}"];
+node4 [label = "{<f0>5 | <f1>}"];
+node5 [label = "{<f0>6 | <f1>}"];
+node6 [label = "{<f0>7 | <f1>}"];
+node7 [label = "{<f0>8 | <f1>}"];
+nil_final [label = "nil", shape = square];
+node0 -> nil_inicio;
+nil_inicio -> node0 [style=invis];
+node0 -> node1;
+node1 -> node0;
+node1 -> node2;
+node2 -> node1;
+node2 -> node3;
+node3 -> node2;
+node3 -> node4;
+node4 -> node3;
+node4 -> node5;
+node5 -> node4;
+node5 -> node6;
+node6 -> node5;
+node6 -> node7;
+node7 -> node6;
+node7 -> nil_final;
+nil_final -> node7 [style=invis];
+}

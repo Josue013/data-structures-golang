@@ -111,6 +111,12 @@ func (l *Lista_simple) Graficar() {
 	// if l.Tamanio > 0 {
 	// 	dot += fmt.Sprintf("node%d:f1 -> node0:f0 [contraint=false];\n", l.Tamanio-1)
 	// }
+
+	dot += "nil_final [label = \"nil\", shape = square];\n"
+	if l.Tamanio > 0 {
+		dot += fmt.Sprintf("node%d -> nil_final;\n", l.Tamanio-1)
+	}
+
 	dot += "}"
 
 	f, err := os.Create("Reportes/lista_simple.dot")
