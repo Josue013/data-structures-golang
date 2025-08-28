@@ -79,15 +79,15 @@ func (l *Lista_simple) Eliminar(dato int) {
 func (l *Lista_simple) Imprimir() {
 	actual := l.Cabeza
 	if l.Cabeza == nil {
-		println("[]")
+		fmt.Println("[]")
 		return
 	}
-	print("[")
+	fmt.Print("[")
 	for actual.Siguiente != nil {
-		print(actual.Dato, ", ")
+		fmt.Print(actual.Dato, ", ")
 		actual = actual.Siguiente
 	}
-	print(actual.Dato, "]\n")
+	fmt.Print(actual.Dato, "]\n")
 }
 
 func (l *Lista_simple) Graficar() {
